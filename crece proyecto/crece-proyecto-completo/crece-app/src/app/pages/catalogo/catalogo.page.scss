@@ -1,0 +1,42 @@
+.crece-catalog-page {
+  --padding-bottom: 24px;
+}
+
+.crece-catalog-admin-list {
+  padding: 8px 12px 90px;
+
+  ion-item {
+    --background: #fff;
+    --border-radius: 15px;
+    --inner-padding-end: 12px;
+    margin: 8px 0;
+  }
+
+  ion-thumbnail {
+    overflow: hidden;
+    border-radius: 12px;
+    background: #e1f5ee;
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  ion-note {
+    color: var(--crece-primary);
+    font-weight: 700;
+  }
+}
+
+ion-fab-button {
+  --background: var(--crece-primary);
+}
+
+ion-modal ion-content {
+  --background: #f8f6f4;
+}
+
+ion-modal ion-list {
+  padding: 4px 0;
+}

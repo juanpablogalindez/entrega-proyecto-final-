@@ -1,0 +1,172 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Crece<span class="brand-mark">+</span></ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="home-search-toolbar">
+    <ion-searchbar
+      placeholder="Buscar negocios o productos"
+      [(ngModel)]="texto"
+      (ionChange)="buscar()"
+      debounce="400">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <section class="crece-hero">
+    <img
+      class="crece-hero-image"
+      src="/crece-hero.jpg"
+      alt="Crece+, Neiva y Huila. Tu negocio, más cerca. Conecta, vende y crece."
+    />
+  </section>
+
+  <section class="home-welcome clickable" routerLink="/tabs/mapa" role="button" tabindex="0">
+    <div>
+      <span class="eyebrow">Descubre lo local</span>
+      <h2>Negocios cerca de ti</h2>
+      <p>Encuentra productos y servicios de emprendedores de tu ciudad.</p>
+    </div>
+    <ion-icon name="location-outline" aria-hidden="true"></ion-icon>
+  </section>
+
+  <section class="category-strip" *ngIf="categorias().length">
+    <div class="section-heading">
+      <h3>Categorías</h3>
+      <button type="button" class="view-all-button" (click)="verTodas()">Ver todas</button>
+    </div>
+    <div class="category-scroll">
+      <button type="button" class="category-tile" *ngFor="let categoria of categorias()"
+              (click)="seleccionarCategoria(categoria.id)">
+        <span class="category-tile-icon">
+          <ion-icon [name]="categoria.nombre.toLowerCase().includes('comida') || categoria.nombre.toLowerCase().includes('aliment')
+            ? 'restaurant-outline'
+            : categoria.nombre.toLowerCase().includes('belleza') ? 'cut-outline'
+            : categoria.nombre.toLowerCase().includes('educ') ? 'school-outline'
+            : categoria.nombre.toLowerCase().includes('hogar') ? 'home-outline'
+            : categoria.nombre.toLowerCase().includes('salud') ? 'medkit-outline'
+            : categoria.nombre.toLowerCase().includes('tecnolog') ? 'phone-portrait-outline'
+            : categoria.nombre.toLowerCase().includes('ferreter') ? 'hammer-outline'
+            : categoria.nombre.toLowerCase().includes('ropa') ? 'shirt-outline'
+            : categoria.nombre.toLowerCase().includes('servicio') ? 'briefcase-outline'
+            : categoria.nombre.toLowerCase().includes('otro') ? 'apps-outline'
+            : 'storefront-outline'"></ion-icon>
+        </span>
+        <strong>{{ categoria.nombre }}</strong>
+      </button>
+    </div>
+  </section>
+
+  <div class="ion-text-center ion-padding" *ngIf="cargando()">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="vista === 'mapa' && !cargando()" class="map-shell">
+    <div id="mapa-negocios" style="height: 100%; width: 100%;"></div>
+  </div>
+
+  <div class="section-heading business-heading" *ngIf="!cargando()">
+    <div>
+      <h3>Negocios destacados</h3>
+      <span>{{ negocios().length }} disponibles</span>
+    </div>
+    <button type="button" class="view-all-button" (click)="filtrosAbiertos = true">
+      <ion-icon name="options-outline" aria-hidden="true"></ion-icon>
+      Filtros
+    </button>
+    <a class="map-view-link" routerLink="/tabs/mapa">
+      <ion-icon name="map-outline" aria-hidden="true"></ion-icon>
+      Mapa
+    </a>
+    <ion-segment [value]="vista" (ionChange)="cambiarVista($event.detail.value)" aria-label="Tipo de vista">
+      <ion-segment-button value="lista" aria-label="Vista de lista">
+        <ion-label>Lista</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="mapa" aria-label="Vista de mapa">
+        <ion-label>Mapa</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div *ngIf="vista === 'lista' && !cargando()" class="business-grid">
+    <article *ngFor="let negocio of negocios()" class="business-card">
+      <a class="business-card-link" [routerLink]="['/negocio', negocio.id]">
+        <div class="business-card-image">
+          <img *ngIf="negocio.logo_url; else iconoNegocio"
+               [src]="imagenUrl(negocio.logo_url)" [alt]="negocio.nombre_negocio" />
+          <ng-template #iconoNegocio>
+            <span class="business-card-placeholder" aria-hidden="true">
+              <ion-icon name="storefront-outline"></ion-icon>
+            </span>
+          </ng-template>
+          <span *ngIf="negocio.verificado" class="business-card-verified">
+            <ion-icon name="shield-checkmark"></ion-icon>
+            Verificado
+          </span>
+          <ion-badge color="success" *ngIf="negocio.estado === 'activo'">Abierto</ion-badge>
+        </div>
+        <div class="business-card-details">
+          <div class="business-card-title">
+            <h2>{{ negocio.nombre_negocio }}</h2>
+          </div>
+          <p class="business-card-category">{{ negocio.categoria_nombre || 'Sin categoría' }}</p>
+          <p class="business-card-rating">
+            <span>{{ estrellas(negocio.calificacion_promedio) }}</span>
+            {{ negocio.total_resenas || 0 }}
+            <small *ngIf="negocio.distancia_km != null">
+              · {{ negocio.distancia_km | number:'1.1-1' }} km
+            </small>
+          </p>
+        </div>
+      </a>
+      <ion-button class="business-card-favorite" fill="clear"
+                  [attr.aria-label]="(favoritos.contiene(negocio.id) ? 'Quitar ' : 'Agregar ') + negocio.nombre_negocio + ' ' + (favoritos.contiene(negocio.id) ? 'de' : 'a') + ' favoritos'"
+                  (click)="alternarFavorito($event, negocio)">
+        <ion-icon [name]="favoritos.contiene(negocio.id) ? 'heart' : 'heart-outline'"></ion-icon>
+      </ion-button>
+    </article>
+  </div>
+
+  <div class="ion-text-center ion-padding" *ngIf="!cargando() && negocios().length === 0">
+    <p>No se encontraron negocios con esos criterios.</p>
+  </div>
+
+  <ion-modal class="filter-sheet" [isOpen]="filtrosAbiertos" (didDismiss)="filtrosAbiertos = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Filtros</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="filtrosAbiertos = false" aria-label="Cerrar filtros">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label>
+            <h2>Buscar cerca de mí</h2>
+            <p>Usa tu ubicación para mostrar negocios cercanos.</p>
+          </ion-label>
+          <ion-toggle [(ngModel)]="usarCercania" (ionChange)="alternarCercania()"
+                      aria-label="Buscar cerca de mí"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>Radio de búsqueda: {{ radio }} km</ion-label>
+        </ion-item>
+        <ion-range [min]="1" [max]="30" [step]="1" [(ngModel)]="radio"
+                   [disabled]="!usarCercania" aria-label="Radio de búsqueda en kilómetros">
+        </ion-range>
+      </ion-content>
+      <ion-footer class="ion-padding">
+        <ion-button fill="outline" expand="block" (click)="limpiarFiltros()">Limpiar</ion-button>
+        <ion-button expand="block" (click)="aplicarFiltros()">Aplicar</ion-button>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+</ion-content>

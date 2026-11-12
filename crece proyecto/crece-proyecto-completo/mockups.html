@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crece+ | Mockups</title>
+  <style>
+    :root {
+      --green-950: #073b2d;
+      --green-800: #0f6e56;
+      --green-600: #159775;
+      --green-100: #e1f5ee;
+      --ink: #19352e;
+      --muted: #71817b;
+      --paper: #f4faf5;
+      --white: #ffffff;
+      --line: #e2eee7;
+      --yellow: #f4bb35;
+      --shadow: 0 24px 70px rgba(9, 61, 45, .18);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(21, 151, 117, .14), transparent 28%),
+        radial-gradient(circle at 90% 80%, rgba(244, 187, 53, .18), transparent 24%),
+        #e9eee9;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    button { font: inherit; }
+    .page { min-height: 100vh; padding: 42px 22px 64px; }
+    .intro { max-width: 1120px; margin: 0 auto 34px; display: flex; justify-content: space-between; align-items: end; gap: 28px; }
+    .eyebrow { margin: 0 0 8px; color: var(--green-800); font: 700 12px/1.2 Arial, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 640px; font-size: clamp(36px, 6vw, 74px); line-height: .94; letter-spacing: -.04em; }
+    .intro p { max-width: 300px; margin: 0; color: var(--muted); font: 15px/1.5 Arial, sans-serif; }
+
+    .stage { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 250px minmax(280px, 390px) 1fr; gap: 28px; align-items: start; }
+    .screen-nav { padding: 18px; border: 1px solid rgba(15, 110, 86, .14); border-radius: 20px; background: rgba(255,255,255,.65); box-shadow: 0 14px 35px rgba(9,61,45,.07); }
+    .screen-nav h2 { margin: 0 0 16px; font-size: 20px; }
+    .screen-button { width: 100%; padding: 13px 14px; margin: 4px 0; border: 0; border-radius: 12px; color: var(--ink); background: transparent; cursor: pointer; text-align: left; font: 700 14px Arial, sans-serif; }
+    .screen-button:hover, .screen-button.active { color: var(--white); background: var(--green-800); }
+    .phone { min-height: 730px; padding: 11px; border: 8px solid #263a34; border-radius: 38px; background: #263a34; box-shadow: var(--shadow); }
+    .phone-screen { min-height: 700px; position: relative; overflow: hidden; border-radius: 27px; background: var(--paper); }
+    .phone-screen::before { content: ""; display: block; position: absolute; z-index: 4; top: 9px; left: 50%; width: 92px; height: 19px; transform: translateX(-50%); border-radius: 20px; background: #263a34; }
+    .mock-screen { display: none; min-height: 700px; padding-bottom: 64px; }
+    .mock-screen.active { display: block; animation: appear .35s ease both; }
+    @keyframes appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 32px 18px 13px; color: var(--white); background: var(--green-800); font: 800 17px Arial, sans-serif; }
+    .topbar span { font-size: 21px; }
+    .hero { min-height: 185px; padding: 52px 20px 20px; color: var(--white); background: linear-gradient(180deg, rgba(7,59,45,.05), rgba(7,59,45,.75)), linear-gradient(135deg, #99dbc1, #0f6e56); }
+    .hero small { font: 700 10px Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    .hero h2 { margin: 8px 0 3px; font-size: 43px; line-height: .9; }
+    .hero p { margin: 8px 0; font: 700 15px Arial, sans-serif; }
+    .welcome { display: flex; justify-content: space-between; align-items: center; margin: 14px; padding: 15px; border-radius: 17px; background: var(--white); box-shadow: 0 8px 20px rgba(9,61,45,.07); }
+    .welcome strong { display: block; font: 800 14px Arial, sans-serif; }
+    .welcome span { display: block; margin-top: 5px; color: var(--muted); font: 11px Arial, sans-serif; }
+    .round-icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; color: var(--white); background: var(--green-800); font: 20px Arial, sans-serif; }
+    .section-title { display: flex; justify-content: space-between; padding: 4px 16px 8px; font: 800 13px Arial, sans-serif; }
+    .section-title em { color: var(--green-600); font-style: normal; font-size: 11px; }
+    .category-row { display: flex; gap: 9px; padding: 0 14px 12px; overflow: hidden; }
+    .category { min-width: 68px; padding: 10px 5px; border-radius: 14px; color: var(--green-800); background: var(--green-100); text-align: center; font: 700 10px Arial, sans-serif; }
+    .category b { display: grid; width: 28px; height: 28px; margin: auto auto 5px; place-items: center; border-radius: 50%; background: var(--white); font-size: 16px; }
+    .business-list { margin: 0 14px; overflow: hidden; border-radius: 16px; background: var(--white); }
+    .business { display: flex; align-items: center; gap: 11px; padding: 13px 12px; border-bottom: 1px solid var(--line); }
+    .business:last-child { border-bottom: 0; }
+    .business-avatar { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 12px; color: var(--green-800); background: var(--green-100); font-size: 20px; }
+    .business strong { display: block; font: 800 13px Arial, sans-serif; }
+    .business small { display: block; margin-top: 4px; color: var(--muted); font: 11px Arial, sans-serif; }
+    .map-banner { margin: 14px; padding: 11px 13px; border-radius: 15px; color: var(--green-800); background: var(--green-100); font: 700 11px Arial, sans-serif; }
+    .map { height: 365px; margin: 0 14px; position: relative; overflow: hidden; border-radius: 21px; background: #d5e9df; background-image: linear-gradient(35deg, transparent 45%, rgba(255,255,255,.8) 46%, rgba(255,255,255,.8) 49%, transparent 50%), linear-gradient(115deg, transparent 42%, rgba(255,255,255,.8) 43%, rgba(255,255,255,.8) 45%, transparent 46%); background-size: 96px 82px, 130px 120px; }
+    .map::after { content: "Neiva"; position: absolute; left: 39%; top: 46%; color: rgba(25,53,46,.54); font: 700 24px Georgia, serif; }
+    .pin { position: absolute; z-index: 1; display: grid; width: 27px; height: 27px; place-items: center; border: 3px solid var(--white); border-radius: 50% 50% 50% 0; color: var(--white); background: var(--green-800); box-shadow: 0 4px 10px rgba(0,0,0,.18); transform: rotate(-45deg); }
+    .pin::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--white); }
+    .pin.one { top: 31%; left: 47%; } .pin.two { top: 56%; left: 57%; } .pin.three { top: 67%; left: 35%; }
+    .profile-hero { padding: 52px 20px 24px; color: var(--white); text-align: center; background: linear-gradient(135deg, #8ed4bc, #0f6e56); }
+    .profile-avatar { display: grid; width: 78px; height: 78px; margin: 0 auto 10px; place-items: center; border: 4px solid rgba(255,255,255,.8); border-radius: 50%; color: var(--green-600); background: #eafaf2; font-size: 42px; }
+    .profile-hero h2 { margin: 0 0 4px; font-size: 22px; }
+    .profile-hero p { margin: 0; opacity: .9; font: 11px Arial, sans-serif; }
+    .edit { margin: 13px auto 0; padding: 9px 15px; border: 0; border-radius: 20px; color: var(--green-800); background: var(--white); font: 800 11px Arial, sans-serif; }
+    .menu { margin: 15px 14px; overflow: hidden; border-radius: 16px; background: var(--white); }
+    .menu-row { display: flex; align-items: center; gap: 11px; padding: 15px 14px; border-bottom: 1px solid var(--line); font: 700 12px Arial, sans-serif; }
+    .menu-row:last-child { border-bottom: 0; color: #b34747; }
+    .menu-icon { width: 20px; color: var(--green-600); text-align: center; font-size: 17px; }
+    .menu-row:last-child .menu-icon { color: #b34747; }
+    .arrow { margin-left: auto; color: #9aa8a1; font-size: 17px; }
+    .form-card { margin: 14px; padding: 16px; border-radius: 17px; background: var(--white); }
+    .form-card h3 { margin: 0 0 13px; font-size: 18px; }
+    .field { margin: 9px 0; padding: 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); font: 12px Arial, sans-serif; }
+    .primary { width: 100%; margin-top: 8px; padding: 12px; border: 0; border-radius: 12px; color: var(--white); background: var(--green-800); font: 800 12px Arial, sans-serif; }
+    .login { min-height: 700px; display: grid; align-content: center; padding: 26px; background: linear-gradient(160deg, #e1f5ee, #f8fbf7); }
+    .login-logo { display: grid; width: 76px; height: 76px; margin: 0 auto 16px; place-items: center; border-radius: 23px; color: var(--white); background: var(--green-800); font: 800 36px Georgia, serif; box-shadow: 0 12px 25px rgba(15,110,86,.22); }
+    .login h2 { margin: 0; text-align: center; font-size: 31px; }
+    .login p { margin: 7px 0 22px; color: var(--muted); text-align: center; font: 12px Arial, sans-serif; }
+    .bottom-nav { position: absolute; right: 0; bottom: 0; left: 0; display: flex; justify-content: space-around; padding: 10px 5px 12px; border-top: 1px solid var(--line); background: rgba(255,255,255,.96); }
+    .bottom-nav span { color: var(--muted); text-align: center; font: 9px Arial, sans-serif; }
+    .bottom-nav span b { display: block; margin-bottom: 3px; color: inherit; font-size: 17px; }
+    .bottom-nav span.active { color: var(--green-800); font-weight: 800; }
+    .notes { padding: 24px; border: 1px solid rgba(15, 110, 86, .12); border-radius: 20px; background: rgba(255,255,255,.72); }
+    .notes h2 { margin: 0 0 10px; font-size: 24px; }
+    .notes p, .notes li { color: var(--muted); font: 14px/1.55 Arial, sans-serif; }
+    .notes ul { padding-left: 20px; }
+    .tag { display: inline-block; margin: 3px 3px 0 0; padding: 6px 9px; border-radius: 999px; color: var(--green-800); background: var(--green-100); font: 700 11px Arial, sans-serif; }
+    @media (max-width: 850px) { .stage { grid-template-columns: 1fr; max-width: 390px; } .screen-nav { order: 2; } .phone { order: 1; } .notes { order: 3; } .intro { display: block; } .intro p { margin-top: 15px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="intro">
+      <div>
+        <p class="eyebrow">Sistema de emprendimiento local</p>
+        <h1>Crece+<br><span style="color: var(--green-800)">en movimiento.</span></h1>
+      </div>
+      <p>Mockups navegables para presentar la experiencia movil de la plataforma Crece+.</p>
+    </header>
+
+    <section class="stage">
+      <nav class="screen-nav" aria-label="Pantallas del mockup">
+        <h2>Vistas</h2>
+        <button class="screen-button active" data-screen="inicio">Inicio</button>
+        <button class="screen-button" data-screen="mapa">Mapa de negocios</button>
+        <button class="screen-button" data-screen="perfil">Perfil</button>
+        <button class="screen-button" data-screen="negocio">Mi negocio</button>
+        <button class="screen-button" data-screen="login">Inicio de sesion</button>
+      </nav>
+
+      <div class="phone" aria-label="Mockup de telefono">
+        <div class="phone-screen">
+          <section class="mock-screen active" id="screen-inicio">
+            <div class="topbar"><span>Crece<span style="color:#f4bb35">+</span></span><span>♧</span></div>
+            <div class="hero"><small>Neiva y Huila</small><h2>Crece+</h2><p>Tu negocio, mas cerca</p><small>Conecta · Vende · Crece</small></div>
+            <div class="welcome"><div><strong>Negocios cerca de ti</strong><span>Encuentra productos y servicios locales.</span></div><div class="round-icon">⌖</div></div>
+            <div class="section-title"><span>Categorias</span><em>Ver todas</em></div>
+            <div class="category-row"><div class="category"><b>⌂</b>Comida</div><div class="category"><b>✂</b>Belleza</div><div class="category"><b>◈</b>Ropa</div><div class="category"><b>✚</b>Salud</div></div>
+            <div class="section-title"><span>Negocios destacados</span><em>6 disponibles</em></div>
+            <div class="business-list"><div class="business"><div class="business-avatar">⌂</div><div><strong>Panaderia Su Pan</strong><small>Comida · ★★★★★</small></div></div><div class="business"><div class="business-avatar">✂</div><div><strong>Belleza Natural Neiva</strong><small>Belleza · Nuevo negocio</small></div></div></div>
+            <div class="bottom-nav"><span class="active"><b>⌂</b>Inicio</span><span><b>▣</b>Mapa</span><span><b>♡</b>Favoritos</span><span><b>●</b>Perfil</span></div>
+          </section>
+
+          <section class="mock-screen" id="screen-mapa">
+            <div class="topbar"><span>Mapa de negocios</span><span>♧</span></div>
+            <div class="map-banner">⌖ Activa tu ubicacion para buscar cerca <strong style="float:right">ACTIVAR</strong></div>
+            <div class="map"><i class="pin one"></i><i class="pin two"></i><i class="pin three"></i></div>
+            <div class="business-list" style="margin-top:14px"><div class="business"><div class="business-avatar">⌂</div><div><strong>Panaderia Su Pan</strong><small>Comida · 0.8 km</small></div></div><div class="business"><div class="business-avatar">✂</div><div><strong>Belleza Natural Neiva</strong><small>Belleza · 1.2 km</small></div></div></div>
+            <div class="bottom-nav"><span><b>⌂</b>Inicio</span><span class="active"><b>▣</b>Mapa</span><span><b>♡</b>Favoritos</span><span><b>●</b>Perfil</span></div>
+          </section>
+
+          <section class="mock-screen" id="screen-perfil">
+            <div class="topbar"><span>Mi perfil</span><span>⋯</span></div>
+            <div class="profile-hero"><div class="profile-avatar">●</div><h2>Juan Perez</h2><p>juan@gmail.com</p><button class="edit">✎ Editar perfil</button></div>
+            <div class="menu"><div class="menu-row"><span class="menu-icon">⌂</span>Mi negocio<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">♡</span>Mis favoritos<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">▣</span>Mis capacitaciones<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">⚙</span>Configuracion<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">?</span>Ayuda<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">↪</span>Cerrar sesion</div></div>
+            <div class="bottom-nav"><span><b>⌂</b>Inicio</span><span><b>▣</b>Mapa</span><span><b>♡</b>Favoritos</span><span class="active"><b>●</b>Perfil</span></div>
+          </section>
+
+          <section class="mock-screen" id="screen-negocio">
+            <div class="topbar"><span>Mi negocio</span><span>⋯</span></div>
+            <div class="welcome" style="margin-top:18px"><div><strong>Panaderia Su Pan</strong><span>Tu vitrina digital esta activa.</span></div><div class="round-icon">⌂</div></div>
+            <div class="form-card"><h3>Datos del negocio</h3><div class="field">Nombre del negocio<br><strong style="color:var(--ink)">Panaderia Su Pan</strong></div><div class="field">Direccion<br><strong style="color:var(--ink)">El parque, Neiva</strong></div><div class="field">Telefono<br><strong style="color:var(--ink)">317 321 9839</strong></div><button class="primary">Guardar cambios</button></div>
+            <div class="section-title"><span>Accesos rapidos</span></div><div class="menu"><div class="menu-row"><span class="menu-icon">▦</span>Gestionar catalogo<span class="arrow">›</span></div><div class="menu-row"><span class="menu-icon">$</span>Facturacion<span class="arrow">›</span></div></div>
+            <div class="bottom-nav"><span><b>⌂</b>Inicio</span><span><b>▣</b>Mapa</span><span class="active"><b>▤</b>Negocio</span><span><b>●</b>Perfil</span></div>
+          </section>
+
+          <section class="mock-screen" id="screen-login">
+            <div class="login"><div class="login-logo">C+</div><h2>Bienvenido a Crece+</h2><p>Conecta, vende y haz crecer tu negocio local.</p><div class="field">Correo electronico</div><div class="field">Contrasena</div><button class="primary">Iniciar sesion</button><p style="margin:18px 0 0">Aun no tienes cuenta? <strong style="color:var(--green-800)">Registrate</strong></p></div>
+          </section>
+        </div>
+      </div>
+
+      <aside class="notes">
+        <h2 id="notes-title">Inicio</h2>
+        <p id="notes-copy">Entrada principal para descubrir negocios, filtrar por categorias y acceder al mapa.</p>
+        <div id="notes-tags"><span class="tag">Busqueda</span><span class="tag">Categorias</span><span class="tag">Negocios destacados</span></div>
+        <ul><li>Composicion pensada primero para celular.</li><li>Paleta verde asociada a crecimiento y comercio local.</li><li>Componentes listos para llevar a Ionic.</li></ul>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const descriptions = {
+      inicio: ['Inicio', 'Entrada principal para descubrir negocios, filtrar por categorias y acceder al mapa.', ['Busqueda', 'Categorias', 'Negocios destacados']],
+      mapa: ['Mapa de negocios', 'Vista geolocalizada para encontrar emprendimientos cercanos y centrar cada marcador.', ['Ubicacion', 'Marcadores', 'Cercania']],
+      perfil: ['Perfil', 'Resumen de la cuenta con accesos ordenados, identidad del usuario y edicion de datos.', ['Usuario', 'Editar perfil', 'Configuracion']],
+      negocio: ['Mi negocio', 'Panel del emprendedor para actualizar datos y entrar al catalogo y la facturacion.', ['Catalogo', 'Facturacion', 'Perfil comercial']],
+      login: ['Inicio de sesion', 'Acceso simple y directo para clientes y emprendedores de Crece+.', ['Autenticacion', 'Cliente', 'Emprendedor']]
+    };
+    const buttons = document.querySelectorAll('.screen-button');
+    const screens = document.querySelectorAll('.mock-screen');
+    const title = document.getElementById('notes-title');
+    const copy = document.getElementById('notes-copy');
+    const tags = document.getElementById('notes-tags');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const key = button.dataset.screen;
+      buttons.forEach(item => item.classList.toggle('active', item === button));
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === `screen-${key}`));
+      const [heading, text, tagList] = descriptions[key];
+      title.textContent = heading;
+      copy.textContent = text;
+      tags.innerHTML = tagList.map(tag => `<span class="tag">${tag}</span>`).join('');
+    }));
+  </script>
+</body>
+</html>

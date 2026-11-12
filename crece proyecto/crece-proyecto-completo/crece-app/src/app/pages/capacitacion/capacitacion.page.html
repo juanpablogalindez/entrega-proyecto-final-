@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Capacitación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-note class="ion-padding ion-text-center" style="display:block">
+    Contenido corto para formalizar y hacer crecer su negocio.
+  </ion-note>
+
+  <ion-list>
+    <ion-card *ngFor="let contenido of contenidos()">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-icon [name]="icono(contenido.tipo_contenido)"></ion-icon>
+          {{ contenido.categoria | titlecase }}
+          <span *ngIf="contenido.duracion_minutos"> · {{ contenido.duracion_minutos }} min</span>
+        </ion-card-subtitle>
+        <ion-card-title>{{ contenido.titulo }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{ contenido.descripcion }}</p>
+
+        <ion-progress-bar
+          *ngIf="contenido.porcentaje_avance"
+          [value]="(contenido.porcentaje_avance || 0) / 100"
+          class="ion-margin-vertical">
+        </ion-progress-bar>
+
+        <ion-button size="small" (click)="abrir(contenido)" *ngIf="contenido.url_recurso">
+          Ver contenido
+        </ion-button>
+        <ion-button size="small" fill="outline" (click)="marcarCompletado(contenido)"
+                    [disabled]="contenido.completado">
+          {{ contenido.completado ? 'Completado ✓' : 'Marcar completado' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

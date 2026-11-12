@@ -1,0 +1,45 @@
+<ion-content class="ion-padding auth-screen">
+  <div class="auth-shell">
+    <div class="auth-hero">
+      <div class="login-logo" aria-hidden="true">C+</div>
+      <h1>Crece+</h1>
+      <p>Impulsa tu negocio en Neiva y el Huila</p>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="ingresar()">
+      <ion-list lines="full">
+        <ion-item>
+          <ion-input label="Correo electrónico" labelPlacement="floating"
+                     type="email" formControlName="email"
+                     placeholder="correo@ejemplo.com"></ion-input>
+        </ion-item>
+        <ion-note color="danger" class="ion-padding-start"
+          *ngIf="formulario.controls.email.touched && formulario.controls.email.invalid">
+          Ingrese un correo válido
+        </ion-note>
+
+        <ion-item>
+          <ion-input label="Contraseña" labelPlacement="floating"
+                     type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-note color="danger" class="ion-padding-start"
+          *ngIf="formulario.controls.password.touched && formulario.controls.password.invalid">
+          Mínimo 6 caracteres
+        </ion-note>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="cargando()">
+        <ion-spinner *ngIf="cargando()" name="crescent"></ion-spinner>
+        <span *ngIf="!cargando()">Iniciar sesión</span>
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" routerLink="/registro">
+        ¿No tiene cuenta? Regístrese
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" color="medium" routerLink="/tabs/inicio">
+        Explorar sin cuenta
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

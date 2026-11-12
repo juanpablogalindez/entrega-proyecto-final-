@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding auth-screen">
+  <div class="auth-shell">
+    <div class="auth-hero">
+      <h1>Únete</h1>
+      <p>Crea tu cuenta y empieza a conectar con la comunidad</p>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+      <ion-list lines="full">
+        <ion-item>
+          <ion-input label="Nombre completo" labelPlacement="floating"
+                     formControlName="nombre_completo" inputmode="text"
+                     (ionInput)="limpiarNombre($event)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Correo electrónico" labelPlacement="floating"
+                     type="email" formControlName="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Teléfono (opcional)" labelPlacement="floating"
+                     type="tel" inputmode="numeric" maxlength="15"
+                     formControlName="telefono" (ionInput)="limpiarTelefono($event)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Contraseña" labelPlacement="floating"
+                     type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-select label="Tipo de cuenta" labelPlacement="floating" formControlName="rol">
+            <ion-select-option value="cliente">Cliente (quiero buscar negocios)</ion-select-option>
+            <ion-select-option value="negocio">Emprendedor (tengo un negocio)</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="cargando()">
+        <ion-spinner *ngIf="cargando()" name="crescent"></ion-spinner>
+        <span *ngIf="!cargando()">Registrarme</span>
+      </ion-button>
+
+      <ion-button expand="block" fill="clear" routerLink="/login">Ya tengo cuenta</ion-button>
+    </form>
+  </div>
+</ion-content>

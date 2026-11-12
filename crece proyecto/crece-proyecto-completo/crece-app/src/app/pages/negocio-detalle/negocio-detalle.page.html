@@ -1,0 +1,280 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/inicio"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ negocio()?.nombre_negocio || 'Negocio' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="negocio() as n">
+    <ion-card class="detail-card">
+      <img *ngIf="n.logo_url" [src]="imagenUrl(n.logo_url)" [alt]="n.nombre_negocio" />
+      <ion-card-header>
+        <ion-card-subtitle>
+          <span class="category-icon" aria-hidden="true">
+            <ion-icon *ngIf="n.categoria_nombre?.toLowerCase()?.includes('alimento')" name="restaurant-outline"></ion-icon>
+            <ion-icon *ngIf="n.categoria_nombre?.toLowerCase()?.includes('belleza')" name="cut-outline"></ion-icon>
+            <ion-icon *ngIf="n.categoria_nombre?.toLowerCase()?.includes('ferreter')" name="hammer-outline"></ion-icon>
+            <ion-icon *ngIf="n.categoria_nombre?.toLowerCase()?.includes('tecnolog')" name="phone-portrait-outline"></ion-icon>
+            <ion-icon *ngIf="n.categoria_nombre?.toLowerCase()?.includes('salud')" name="medkit-outline"></ion-icon>
+            <ion-icon *ngIf="!n.categoria_nombre || (!n.categoria_nombre.toLowerCase().includes('alimento') && !n.categoria_nombre.toLowerCase().includes('belleza') && !n.categoria_nombre.toLowerCase().includes('ferreter') && !n.categoria_nombre.toLowerCase().includes('tecnolog') && !n.categoria_nombre.toLowerCase().includes('salud'))" name="storefront-outline"></ion-icon>
+          </span>
+          {{ n.categoria_nombre }}
+        </ion-card-subtitle>
+        <ion-card-title>{{ n.nombre_negocio }}</ion-card-title>
+        <div class="business-verification-seal" *ngIf="n.verificado">
+          <span class="business-verification-seal__icon">
+            <ion-icon name="shield-checkmark"></ion-icon>
+          </span>
+          <span class="business-verification-seal__copy">
+            <strong>Negocio verificado</strong>
+            <small>Revisado por el equipo Crece+</small>
+          </span>
+          <ion-icon class="business-verification-seal__check" name="checkmark-circle"></ion-icon>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ n.descripcion }}</p>
+        <p class="business-rating-detail"><strong>{{ estrellas(n.calificacion_promedio) }}</strong>
+           ({{ n.total_resenas || 0 }} reseñas)</p>
+        <p *ngIf="n.direccion"><ion-icon name="location-outline"></ion-icon> {{ n.direccion }}</p>
+        <p *ngIf="n.horario_atencion"><ion-icon name="time-outline"></ion-icon> {{ n.horario_atencion }}</p>
+        <ion-badge color="success" *ngIf="n.formalizado">Negocio formalizado</ion-badge>
+
+        <div class="ion-margin-top">
+          <ion-button size="small" fill="clear"
+                      [attr.aria-label]="(favoritos.contiene(n.id) ? 'Quitar de' : 'Agregar a') + ' favoritos'"
+                      (click)="favoritos.alternar(n)">
+            <ion-icon slot="start" [name]="favoritos.contiene(n.id) ? 'heart' : 'heart-outline'"></ion-icon>
+            {{ favoritos.contiene(n.id) ? 'Guardado' : 'Favorito' }}
+          </ion-button>
+          <ion-button size="small" (click)="abrirWhatsapp()" *ngIf="n.telefono_negocio">
+            <ion-icon slot="start" name="logo-whatsapp"></ion-icon> Contactar
+          </ion-button>
+          <ion-button size="small" fill="outline" (click)="abrirMapa()" *ngIf="n.latitud">
+            <ion-icon slot="start" name="map-outline"></ion-icon> Cómo llegar
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-segment [(ngModel)]="seccion">
+      <ion-segment-button value="catalogo">
+        <ion-label>Catálogo</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="resenas">
+        <ion-label>Reseñas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-list *ngIf="seccion === 'catalogo'" class="catalog-list">
+      <ion-item *ngFor="let item of catalogo()" class="catalog-row">
+        <ion-thumbnail slot="start" *ngIf="item.imagen_url">
+          <button type="button" class="product-image-button" (click)="abrirDetalleProducto(item)"
+                  [attr.aria-label]="'Ver detalles de ' + item.nombre">
+            <img [src]="imagenUrl(item.imagen_url)" [alt]="item.nombre" />
+          </button>
+        </ion-thumbnail>
+        <ion-label>
+          <h3 (click)="abrirDetalleProducto(item)">{{ item.nombre }}</h3>
+          <p>{{ item.descripcion }}</p>
+          <strong class="catalog-item-price">{{ item.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+        </ion-label>
+        <ion-button slot="end" size="small" class="catalog-add-button"
+                    [disabled]="!item.disponible"
+                    [attr.aria-label]="'Agregar ' + item.nombre + ' al carrito'"
+                    (click)="agregarAlCarrito(item)">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          Agregar
+        </ion-button>
+      </ion-item>
+      <ion-item *ngIf="catalogo().length === 0" lines="none">
+        <ion-label class="ion-text-center">Este negocio aún no publica productos.</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-modal [isOpen]="detalleProductoAbierto()" (didDismiss)="cerrarDetalleProducto()">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>{{ productoSeleccionado()?.nombre || 'Detalle' }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="cerrarDetalleProducto()">Cerrar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding product-detail-modal">
+          <ng-container *ngIf="productoSeleccionado() as producto">
+            <img *ngIf="producto.imagen_url" [src]="imagenUrl(producto.imagen_url)"
+                 [alt]="producto.nombre" class="product-detail-image" />
+            <h2>{{ producto.nombre }}</h2>
+            <p *ngIf="producto.descripcion">{{ producto.descripcion }}</p>
+            <p><strong>Precio:</strong> {{ producto.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</p>
+            <p><strong>Tipo:</strong> {{ producto.tipo | titlecase }}</p>
+            <p><strong>Estado:</strong> {{ producto.disponible ? 'Disponible' : 'No disponible' }}</p>
+            <ion-button expand="block" [disabled]="!producto.disponible"
+                        (click)="agregarAlCarrito(producto)">
+              <ion-icon slot="start" name="add-outline"></ion-icon>
+              Agregar al carrito
+            </ion-button>
+          </ng-container>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <div class="cart-summary-bar" *ngIf="cantidadCarrito() > 0 && seccion === 'catalogo'">
+      <div class="cart-summary-info">
+        <span class="cart-item-count">{{ cantidadCarrito() }}</span>
+        <div>
+          <strong>Mi carrito</strong>
+          <span>{{ totalCarrito() | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+        </div>
+      </div>
+      <ion-button (click)="carritoAbierto.set(true)">
+        Ver carrito
+        <ion-icon slot="end" name="cart-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-modal class="cart-modal" [isOpen]="carritoAbierto()" (didDismiss)="carritoAbierto.set(false)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Mi carrito</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="carritoAbierto.set(false)" aria-label="Cerrar carrito">
+                <ion-icon name="close-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding cart-modal-content">
+          <ion-list class="cart-items-list" *ngIf="carrito().length; else carritoVacio">
+            <ion-item *ngFor="let item of carrito()" class="cart-item-row">
+              <ion-label>
+                <h2>{{ item.producto.nombre }}</h2>
+                <p>{{ item.producto.precio | currency:'COP':'symbol-narrow':'1.0-0' }} c/u</p>
+              </ion-label>
+              <div class="cart-quantity-controls">
+                <ion-button fill="clear" size="small"
+                            [attr.aria-label]="'Quitar una unidad de ' + item.producto.nombre"
+                            (click)="cambiarCantidadCarrito(item.producto.id, -1)">
+                  <ion-icon name="remove-circle-outline"></ion-icon>
+                </ion-button>
+                <strong>{{ item.cantidad }}</strong>
+                <ion-button fill="clear" size="small"
+                            [attr.aria-label]="'Agregar una unidad de ' + item.producto.nombre"
+                            (click)="cambiarCantidadCarrito(item.producto.id, 1)">
+                  <ion-icon name="add-circle-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-item>
+          </ion-list>
+
+          <ng-template #carritoVacio>
+            <p class="cart-empty-message">Tu carrito está vacío.</p>
+          </ng-template>
+
+          <ion-item class="cart-payment-item" *ngIf="carrito().length">
+            <ion-select label="Forma de pago" labelPlacement="stacked" [(ngModel)]="metodoPagoPedido">
+              <ion-select-option value="efectivo">Efectivo</ion-select-option>
+              <ion-select-option value="transferencia">Transferencia</ion-select-option>
+              <ion-select-option value="tarjeta">Tarjeta</ion-select-option>
+              <ion-select-option value="otro">Otro</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="cart-notes-item" *ngIf="carrito().length">
+            <ion-textarea label="Observaciones (opcional)" labelPlacement="stacked"
+                          [(ngModel)]="observacionesPedido" rows="3" maxlength="1000">
+            </ion-textarea>
+          </ion-item>
+
+          <div class="cart-total-row" *ngIf="carrito().length">
+            <span>Total</span>
+            <strong>{{ totalCarrito() | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+          </div>
+          <ion-button expand="block" class="cart-submit-button" *ngIf="carrito().length"
+                      [disabled]="pedidoEnviando()" (click)="finalizarPedido()">
+            <ion-spinner *ngIf="pedidoEnviando()" name="crescent"></ion-spinner>
+            <span *ngIf="!pedidoEnviando()">Confirmar pedido</span>
+          </ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <div *ngIf="seccion === 'resenas'">
+      <ion-card>
+        <ion-card-header><ion-card-title>Califique este negocio</ion-card-title></ion-card-header>
+        <ion-card-content>
+          <div class="review-rating-picker" aria-label="Seleccionar calificación">
+            <span>Tu calificación</span>
+            <div>
+              <button type="button" class="star-button" *ngFor="let v of [1,2,3,4,5]"
+                      [class.selected]="v <= nuevaCalificacion"
+                      [attr.aria-label]="v + ' estrellas'"
+                      (click)="nuevaCalificacion = v">★</button>
+            </div>
+          </div>
+          <ion-item lines="none">
+            <ion-textarea label="Comentario" labelPlacement="floating"
+                          [(ngModel)]="nuevoComentario" rows="3"></ion-textarea>
+          </ion-item>
+          <ion-button expand="block" (click)="enviarResena()">Publicar reseña</ion-button>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-list>
+        <ion-item *ngFor="let r of resenas()">
+          <ion-label class="ion-text-wrap">
+            <ng-container *ngIf="editandoResenaId !== r.id; else editarResena">
+              <h3>{{ r.usuario_nombre }} — {{ estrellas(r.calificacion) }}</h3>
+              <p>{{ r.comentario }}</p>
+            </ng-container>
+            <ng-template #editarResena>
+              <div class="review-rating-picker" aria-label="Editar calificación">
+                <span>Calificación</span>
+                <div>
+                  <button type="button" class="star-button" *ngFor="let v of [1,2,3,4,5]"
+                          [class.selected]="v <= edicionCalificacion"
+                          [attr.aria-label]="v + ' estrellas'"
+                          (click)="edicionCalificacion = v">★</button>
+                </div>
+              </div>
+              <ion-textarea label="Comentario" labelPlacement="floating" [(ngModel)]="edicionComentario" rows="3"></ion-textarea>
+              <ion-button size="small" (click)="guardarEdicion(r)">Guardar</ion-button>
+              <ion-button size="small" fill="clear" (click)="cancelarEdicion()">Cancelar</ion-button>
+            </ng-template>
+            <p *ngIf="r.respuesta_negocio">
+              <strong>Respuesta del negocio:</strong> {{ r.respuesta_negocio }}
+            </p>
+            <div class="review-actions" *ngIf="editandoResenaId !== r.id && puedeGestionarResena(r)">
+              <ion-button size="small" fill="clear" (click)="iniciarEdicion(r)">Editar</ion-button>
+              <ion-button size="small" fill="clear" color="danger" (click)="eliminarResena(r)">Eliminar</ion-button>
+            </div>
+            <div *ngIf="puedeResponder() && respondiendoResenaId === r.id">
+              <ion-textarea label="Respuesta del negocio" labelPlacement="floating"
+                            [(ngModel)]="respuestaTexto" rows="2"></ion-textarea>
+              <ion-button size="small" (click)="guardarRespuesta(r)">Responder</ion-button>
+              <ion-button size="small" fill="clear" (click)="cancelarRespuesta()">Cancelar</ion-button>
+            </div>
+            <ion-button *ngIf="puedeResponder() && respondiendoResenaId !== r.id"
+                        size="small" fill="clear" (click)="iniciarRespuesta(r)">
+              {{ r.respuesta_negocio ? 'Editar respuesta' : 'Responder' }}
+            </ion-button>
+          </ion-label>
+        </ion-item>
+
+      <ion-item *ngIf="resenas().length === 0" lines="none" class="reviews-empty">
+        <ion-label class="ion-text-center">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          <p>Aún no hay calificaciones ni reseñas para este negocio.</p>
+        </ion-label>
+      </ion-item>
+      </ion-list>
+    </div>
+  </ng-container>
+</ion-content>

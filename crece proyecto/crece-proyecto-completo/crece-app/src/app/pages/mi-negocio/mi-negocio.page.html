@@ -1,0 +1,303 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mi negocio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card class="owner-business-selector" *ngIf="negociosDisponibles().length">
+    <ion-card-header>
+      <ion-card-title>Tus negocios</ion-card-title>
+      <ion-card-subtitle>Puedes administrar varios negocios desde esta cuenta.</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="owner-business-selector__list">
+        <ion-button *ngFor="let item of negociosDisponibles()"
+                    [fill]="negocio()?.id === item.id ? 'solid' : 'outline'"
+                    size="small"
+                    (click)="seleccionarNegocio(item.id)">
+          {{ item.nombre_negocio }}
+        </ion-button>
+      </div>
+      <ion-button expand="block" fill="clear" (click)="agregarNegocio()">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Agregar otro negocio
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <section class="owner-hero" *ngIf="negocio() as n">
+    <div class="owner-avatar">
+      <img *ngIf="n.logo_url" [src]="imagenUrl(n.logo_url)" [alt]="n.nombre_negocio" />
+      <ion-icon *ngIf="!n.logo_url" name="storefront-outline"></ion-icon>
+    </div>
+    <div class="owner-hero-copy">
+      <span>Mi negocio</span>
+      <h1>{{ n.nombre_negocio }}</h1>
+      <p>{{ n.categoria_nombre || 'Emprendimiento local' }}</p>
+    </div>
+    <ion-badge [color]="colorEstadoVerificacion(n.verificacion_estado)">
+      {{ etiquetaEstadoVerificacion(n.verificacion_estado) }}
+    </ion-badge>
+  </section>
+
+  <ion-card *ngIf="negocio()?.verificacion_estado === 'requiere_correcciones'">
+    <ion-card-header><ion-card-title>Correcciones solicitadas</ion-card-title></ion-card-header>
+    <ion-card-content>
+      <p>{{ negocio()?.verificacion_observaciones || 'Revisa la información de tu negocio y actualízala.' }}</p>
+      <ion-button expand="block" color="primary" (click)="reenviarVerificacion()">
+        Enviar nuevamente a revisión
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <section class="owner-stats" *ngIf="negocio() as n">
+    <div><strong>{{ n.total_resenas || resenas().length }}</strong><span>Reseñas</span></div>
+    <div><strong>{{ n.calificacion_promedio || 0 | number:'1.1-1' }}</strong><span>Valoración</span></div>
+    <div><strong>{{ n.formalizado ? 'Sí' : 'No' }}</strong><span>Formalizado</span></div>
+  </section>
+
+  <ion-grid *ngIf="negocio()">
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" fill="outline" (click)="irACatalogo()">
+          <ion-icon slot="start" name="pricetags-outline"></ion-icon> Catálogo
+        </ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" fill="outline" (click)="irAFacturacion()">
+          <ion-icon slot="start" name="receipt-outline"></ion-icon> Facturación e historial
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card *ngIf="negocio()" class="owner-orders-card">
+    <ion-card-header>
+      <ion-card-title>Pedidos recibidos</ion-card-title>
+      <ion-card-subtitle *ngIf="vistaPedidos() === 'activos'">
+        {{ pedidosActivos().length }} pedidos activos
+      </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="vistaPedidos() === 'historial'">
+        {{ pedidosHistorial().length }} pedidos finalizados o cancelados
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-segment [value]="vistaPedidos()" (ionChange)="cambiarVistaPedidos($event.detail.value)"
+                   aria-label="Sección de pedidos">
+        <ion-segment-button value="activos">
+          <ion-label>Activos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="historial">
+          <ion-label>Historial</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <ion-note color="danger" *ngIf="errorCargaPedidos()">{{ errorCargaPedidos() }}</ion-note>
+      <ion-list *ngIf="pedidosVisibles().length; else sinPedidos" lines="full">
+        <ion-item *ngFor="let pedido of pedidosVisibles()" class="owner-order-item">
+          <ion-label class="ion-text-wrap">
+            <h2>Pedido #{{ pedido.id }} · {{ pedido.cliente_nombre || 'Cliente' }}</h2>
+            <p>{{ pedido.fecha_creacion | date:'short' }} · {{ etiquetaMetodoPago(pedido.metodo_pago) }}</p>
+            <p *ngIf="pedido.cliente_telefono">Teléfono: {{ pedido.cliente_telefono }}</p>
+            <p *ngFor="let item of pedido.items">
+              {{ item.cantidad }} × {{ item.nombre_producto }} ·
+              {{ item.subtotal_linea | currency:'COP':'symbol-narrow':'1.0-0' }}
+            </p>
+            <p *ngIf="pedido.observaciones"><strong>Observaciones:</strong> {{ pedido.observaciones }}</p>
+            <p><strong>Total: {{ pedido.total | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></p>
+            <ion-badge>{{ etiquetaEstadoPedido(pedido.estado) }}</ion-badge>
+            <div class="order-status-actions" *ngIf="estadosSiguientes(pedido.estado).length">
+              <ion-button *ngFor="let estado of estadosSiguientes(pedido.estado)"
+                          size="small" fill="outline"
+                          (click)="cambiarEstadoPedido(pedido, estado)">
+                {{ etiquetaEstadoPedido(estado) }}
+              </ion-button>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ng-template #sinPedidos>
+        <div class="reviews-empty ion-text-center" *ngIf="!errorCargaPedidos()">
+          <ion-icon name="receipt-outline"></ion-icon>
+          <p *ngIf="vistaPedidos() === 'activos'">No tienes pedidos activos.</p>
+          <p *ngIf="vistaPedidos() === 'historial'">Aún no hay pedidos cancelados o entregados.</p>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-note *ngIf="!negocio()" class="ion-padding-start">
+    {{ negociosDisponibles().length
+      ? 'Completa los datos para registrar otro negocio asociado a tu cuenta.'
+      : 'Completa los datos para registrar tu negocio en Crece+.' }}
+  </ion-note>
+
+  <form [formGroup]="formulario" (ngSubmit)="guardar()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-input label="Nombre del negocio" labelPlacement="floating"
+                   formControlName="nombre_negocio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-select label="Categoría" labelPlacement="floating" formControlName="categoria_id">
+          <ion-select-option *ngFor="let c of categorias()" [value]="c.id">{{ c.nombre }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea label="Descripción" labelPlacement="floating"
+                      formControlName="descripcion" rows="3"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Dirección" labelPlacement="floating" formControlName="direccion"></ion-input>
+      </ion-item>
+
+      <section class="owner-location-control" aria-labelledby="owner-location-title">
+        <div class="owner-location-heading">
+          <div>
+            <h2 id="owner-location-title">Ubicación en el mapa</h2>
+            <p>Toca el mapa para poner la marca o arrástrala para ajustar el punto. Guarda para mostrarla en el mapa de negocios; no necesitas activar el GPS.</p>
+          </div>
+        </div>
+        <div #ubicacionMapa class="owner-location-map" aria-label="Mapa para marcar la ubicación del negocio"></div>
+        <p class="owner-location-coordinates" *ngIf="formulario.value.latitud != null && formulario.value.longitud != null">
+          Marca seleccionada: {{ formulario.value.latitud }}, {{ formulario.value.longitud }}
+        </p>
+        <p class="owner-location-coordinates" *ngIf="formulario.value.latitud == null || formulario.value.longitud == null">
+          Aún no has marcado la ubicación. Puedes seleccionarla directamente en el mapa.
+        </p>
+      </section>
+
+      <ion-item>
+        <ion-input label="Teléfono / WhatsApp" labelPlacement="floating"
+                   type="tel" formControlName="telefono_negocio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Correo del negocio" labelPlacement="floating"
+                   type="email" formControlName="email_negocio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Cédula del dueño del negocio" labelPlacement="floating"
+                   type="number" formControlName="cedula_propietario"
+                   inputmode="numeric"></ion-input>
+      </ion-item>
+
+      <section class="legal-documents">
+        <div class="legal-documents-heading">
+          <h2>Documentos del negocio</h2>
+          <p>Adjunta cualquiera de estos documentos en PDF o imagen.</p>
+        </div>
+
+        <div class="legal-documents-grid">
+          <div class="legal-document-option">
+        <input #selectorCedula type="file" accept="application/pdf,image/jpeg,image/png,image/webp" hidden
+               (change)="seleccionarDocumentoNegocio($event, 'cedula')" />
+            <ion-button type="button" fill="outline" expand="block" (click)="selectorCedula.click()">
+              <ion-icon slot="start" name="card-outline"></ion-icon>
+              Cédula
+            </ion-button>
+            <a *ngIf="formulario.get('documento_cedula_url')?.value"
+               [href]="imagenUrl(formulario.get('documento_cedula_url')?.value)"
+               target="_blank" rel="noopener noreferrer">Ver archivo</a>
+          </div>
+
+          <div class="legal-document-option">
+        <input #selectorRut type="file" accept="application/pdf,image/jpeg,image/png,image/webp" hidden
+               (change)="seleccionarDocumentoNegocio($event, 'rut')" />
+            <ion-button type="button" fill="outline" expand="block" (click)="selectorRut.click()">
+              <ion-icon slot="start" name="document-text-outline"></ion-icon>
+              RUT
+            </ion-button>
+            <a *ngIf="formulario.get('documento_rut_url')?.value"
+               [href]="imagenUrl(formulario.get('documento_rut_url')?.value)"
+               target="_blank" rel="noopener noreferrer">Ver archivo</a>
+          </div>
+
+          <div class="legal-document-option">
+        <input #selectorCamara type="file" accept="application/pdf,image/jpeg,image/png,image/webp" hidden
+               (change)="seleccionarDocumentoNegocio($event, 'camara')" />
+            <ion-button type="button" fill="outline" expand="block" (click)="selectorCamara.click()">
+              <ion-icon slot="start" name="business-outline"></ion-icon>
+              Cámara de Comercio
+            </ion-button>
+            <a *ngIf="formulario.get('documento_camara_comercio_url')?.value"
+               [href]="imagenUrl(formulario.get('documento_camara_comercio_url')?.value)"
+               target="_blank" rel="noopener noreferrer">Ver archivo</a>
+          </div>
+        </div>
+      </section>
+
+      <ion-item>
+        <ion-input label="Horario de atención" labelPlacement="floating"
+                   placeholder="Lun a Sáb 8:00 a.m. - 6:00 p.m."
+                   formControlName="horario_atencion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="URL del logo" labelPlacement="floating" formControlName="logo_url"></ion-input>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Logo del negocio</ion-label>
+        <input #selectorLogo type="file" accept="image/jpeg,image/png,image/webp" hidden
+               (change)="seleccionarLogo($event)" />
+        <ion-button type="button" slot="end" fill="outline" (click)="selectorLogo.click()">
+          <ion-icon slot="start" name="image-outline"></ion-icon>
+          Elegir logo
+        </ion-button>
+      </ion-item>
+
+      <ion-item *ngIf="formulario.get('logo_url')?.value" lines="none">
+        <ion-thumbnail slot="start">
+          <img [src]="imagenUrl(formulario.get('logo_url')?.value)" alt="Vista previa del logo" />
+        </ion-thumbnail>
+        <ion-label>Logo cargado</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-toggle formControlName="formalizado">Mi negocio ya está formalizado (RUT)</ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top" [disabled]="guardando()">
+      <ion-spinner *ngIf="guardando()" name="crescent"></ion-spinner>
+      <span *ngIf="!guardando()">
+        {{ negocio() ? 'Actualizar negocio' : (negociosDisponibles().length ? 'Registrar otro negocio' : 'Registrar negocio') }}
+      </span>
+    </ion-button>
+  </form>
+
+  <ion-card *ngIf="negocio()" class="owner-reviews-card">
+    <ion-card-header>
+      <ion-card-title>Calificaciones y reseñas</ion-card-title>
+      <ion-card-subtitle>
+        {{ negocio()?.calificacion_promedio || 0 | number:'1.1-1' }} ★ ·
+        {{ resenas().length }} reseñas
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngIf="resenas().length; else sinResenas" lines="full">
+        <ion-item *ngFor="let resena of resenas()">
+          <ion-label class="ion-text-wrap">
+            <h3>{{ resena.usuario_nombre || 'Cliente' }}</h3>
+            <p class="business-rating">{{ estrellas(resena.calificacion) }}</p>
+            <p *ngIf="resena.comentario">{{ resena.comentario }}</p>
+            <p *ngIf="resena.respuesta_negocio">
+              <strong>Tu respuesta:</strong> {{ resena.respuesta_negocio }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ng-template #sinResenas>
+        <div class="reviews-empty ion-text-center">
+          <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+          <p>Aún no has recibido calificaciones ni reseñas.</p>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

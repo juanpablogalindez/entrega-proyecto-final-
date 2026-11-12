@@ -1,0 +1,257 @@
+.crece-home-brand {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 4px 12px;
+  color: #fff;
+}
+
+.crece-home-brand__nombre {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+
+  span {
+    color: #f4bb35;
+  }
+}
+
+.crece-home-brand small {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.crece-search {
+  gap: 4px;
+}
+
+.crece-search ion-icon {
+  position: relative;
+  z-index: 2;
+  margin-left: 12px;
+}
+
+.crece-search ion-searchbar {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  --background: transparent;
+  --box-shadow: none;
+  --placeholder-color: #8a8a8a;
+  --color: #333333;
+  --icon-color: var(--crece-primary);
+  --clear-button-color: #777777;
+}
+
+.crece-barra {
+  flex-wrap: wrap;
+}
+
+.crece-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: var(--crece-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+.crece-lista-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 16px 12px 0;
+
+  span {
+    color: var(--crece-gris-texto);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  h1 {
+    margin: 2px 0 0;
+    font-size: 19px;
+    font-weight: 800;
+  }
+
+  ion-segment {
+    flex: 0 0 94px;
+    margin: 0;
+  }
+
+  ion-segment-button {
+    min-height: 36px;
+    --padding-start: 4px;
+    --padding-end: 4px;
+  }
+
+  ion-icon {
+    font-size: 18px;
+  }
+}
+
+.crece-card__imagen {
+  position: relative;
+  overflow: hidden;
+  background: #e1f5ee;
+
+  img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+}
+
+.crece-card:nth-child(4n + 2) .crece-card__imagen img,
+.crece-card:nth-child(4n + 3) .crece-card__imagen img {
+  height: 190px;
+}
+
+.crece-card__placeholder {
+  display: grid;
+  min-height: 132px;
+  place-items: center;
+  color: var(--crece-primary);
+  background: linear-gradient(145deg, #e1f5ee, #f4faf5);
+
+  ion-icon {
+    font-size: 42px;
+  }
+}
+
+.crece-card__distancia {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.crece-card__categoria,
+.crece-card__resenas {
+  color: var(--crece-gris-texto);
+  font-size: 11px;
+}
+
+.crece-card__categoria {
+  margin: 0 0 6px;
+}
+
+.crece-formalizado {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 7px;
+  color: var(--ion-color-success);
+  font-size: 10px;
+  font-weight: 700;
+
+  ion-icon {
+    font-size: 14px;
+  }
+}
+
+.crece-filtros__intro {
+  margin: -4px 0 18px;
+  color: var(--crece-gris-texto);
+  font-size: 13px;
+}
+
+.crece-filtros h2 {
+  margin: 8px 0 12px;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.crece-filtros h3 {
+  font-size: 16px;
+}
+
+.crece-filtro-ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff;
+
+  > ion-icon {
+    flex: 0 0 24px;
+    color: var(--crece-primary);
+    font-size: 24px;
+  }
+
+  ion-label {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    white-space: normal;
+  }
+
+  strong {
+    font-size: 13px;
+  }
+
+  span {
+    color: var(--crece-gris-texto);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+}
+
+.crece-rango__cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h3 {
+    margin: 0;
+  }
+
+  strong {
+    color: var(--crece-primary);
+    font-size: 14px;
+  }
+}
+
+.crece-rango__valor {
+  color: var(--crece-gris-texto);
+  font-size: 12px;
+}
+
+.map-shell {
+  height: min(56vh, 520px);
+  margin: 12px;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: var(--crece-sombra);
+}
+
+#mapa-negocios {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 360px) {
+  .crece-grid {
+    column-gap: 8px;
+    padding-inline: 8px;
+  }
+
+  .crece-card__titulo {
+    font-size: 15px;
+  }
+}

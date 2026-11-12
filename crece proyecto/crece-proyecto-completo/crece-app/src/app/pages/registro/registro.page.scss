@@ -1,0 +1,21 @@
+.crece-registro {
+  --background: linear-gradient(180deg, #e1f5ee 0%, #f4faf5 72%);
+}
+
+.crece-registro .auth-shell {
+  margin-top: 8vh;
+  border: 1px solid #f1ded3;
+  border-radius: 20px;
+}
+
+.crece-registro .auth-hero {
+  color: var(--crece-primary);
+}
+
+.crece-registro .auth-hero p {
+  color: var(--crece-gris-texto);
+}
+
+.crece-registro form ion-button[expand='block'] {
+  --border-radius: 999px;
+}

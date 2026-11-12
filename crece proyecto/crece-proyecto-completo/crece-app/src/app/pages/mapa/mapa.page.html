@@ -1,0 +1,44 @@
+<ion-header class="ion-no-border">
+  <div class="crece-map-header">
+    <div>
+      <span>Crece<span class="crece-map-header__plus">+</span></span>
+      <h1>Mapa de negocios</h1>
+    </div>
+    <button type="button" class="crece-map-location" (click)="activarUbicacion()"
+            aria-label="Usar mi ubicación">
+      <ion-icon name="locate-outline"></ion-icon>
+    </button>
+  </div>
+  <div class="crece-map-location-status">
+    <ion-icon name="location-outline"></ion-icon>
+    {{ posicion ? 'Negocios cerca de tu ubicación' : 'Activa tu ubicación para buscar cerca' }}
+    <button type="button" *ngIf="!posicion" (click)="activarUbicacion()">Activar</button>
+  </div>
+</ion-header>
+
+<ion-content class="crece-map-content">
+  <section class="crece-map-panel" aria-label="Mapa de negocios">
+    <div id="mapa-principal" class="map-page-canvas"></div>
+  </section>
+
+  <section class="crece-map-results" *ngIf="negocios.length">
+    <div class="crece-map-results__heading">
+      <h2>Negocios en el mapa</h2>
+      <span>{{ negocios.length }}</span>
+    </div>
+    <ion-list class="map-business-list">
+      <ion-item *ngFor="let negocio of negocios" button (click)="centrarNegocio(negocio)">
+        <span slot="start" class="crece-map-result-icon">
+          <ion-icon name="storefront-outline"></ion-icon>
+        </span>
+        <ion-label>
+          <h3>{{ negocio.nombre_negocio }}</h3>
+          <p>{{ negocio.categoria_nombre || 'Negocio local' }}</p>
+        </ion-label>
+        <ion-note slot="end" *ngIf="negocio.distancia_km != null">
+          {{ negocio.distancia_km | number:'1.1-1' }} km
+        </ion-note>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title">
+  <title id="title">Ilustración placeholder de descubrimiento</title>
+  <rect x="52" y="28" width="216" height="184" rx="32" fill="#fff" opacity=".95"/>
+  <circle cx="160" cy="105" r="52" fill="#ffe0a6"/>
+  <path d="M160 66c-20 0-36 16-36 36 0 27 36 65 36 65s36-38 36-65c0-20-16-36-36-36zm0 49a14 14 0 1 1 0-28 14 14 0 0 1 0 28z" fill="#ff5500"/>
+  <path d="M94 184h132" stroke="#ffb489" stroke-linecap="round" stroke-width="10"/>
+</svg>

@@ -1,0 +1,30 @@
+REPORTE TECNICO  AUDITORIA AUTOMATICA DE CRECE+
+Fecha: 30 de octubre de 2026
+Rama: auditoria-2026-10-30
+
+ALCANCE
+Se revisaron estructura, configuración, frontend, backend, API, base de datos, rutas y componentes. Se ejecutaron Angular, Node/Express y MySQL localmente. Se uso Playwright para navegacion, búsquedas, mapa, favoritos, notificaciones, detalle de negocio, login y registro. No se usaron credenciales reales ni se ejecutaron operaciones destructivas.
+
+TECNOLOGIAS
+Frontend: Ionic, Angular 18, TypeScript, Capacitor y Leaflet. Backend: Node.js, Express, JWT, bcryptjs, Multer y PDFKit. Datos: MySQL. Auditor?a: PowerShell, Playwright, navegador integrado y Git.
+
+EJECUCION
+Frontend http://localhost:4200/: disponible. Backend http://localhost:3000/api: disponible. MySQL crece_db: conectado. Health, categorIas, negocios y negocio 20: HTTP 200. Ruta inexistente: HTTP 404.
+
+RESULTADOS
+ERROR_001 corregido: se registraron iconos faltantes en crece-app/src/main.ts y la pantalla dejO de producir advertencias Ionicons. ERROR_002 no es defecto: credenciales invalidas produjeron 401 y ?Credenciales incorrectas?. ERROR_003 pendiente: validación bloquea el envío, pero faltan mensajes específicos para correo y contraseña. WARN_001 pendiente: el build termina, pero informa bundle inicial sobre presupuesto, Leaflet CommonJS y selectores CSS de Ionic omitidos.
+
+PRUEBAS
+Aprobadas: build Angular, arranque API, MySQL, health, categorias, negocios, mapa, busqueda con y sin resultados, filtros, favoritos, notificaciones, capacitaci?n, protecci?n de rutas, login vacio, login invalido, registro invalido y 404. No ejecutadas: registro/login validos, CRUD de negocios y productos, pedidos, facturaci?n, rese?as persistentes, carga de archivos y administracion; requieren credenciales de prueba autorizadas y pueden modificar datos.
+
+EVIDENCIAS
+Originales: AUDITORIA_PROYECTO/evidencias/errores_originales. Posteriores: AUDITORIA_PROYECTO/evidencias/correcciones. Exitosas: AUDITORIA_PROYECTO/evidencias/pruebas_exitosas.
+
+SEGURIDAD
+La ruta protegida sin token respondio 401. La revision especializada no encontro vulnerabilidades explotables reales. No se incluyen credenciales ni tokens.
+
+MODULO VERIFICAR NEGOCIOS
+Se amplio el modulo administrativo existente sin crear otro administrador ni duplicar el modulo. La migracion 005_verificacion_completa.sql agrega el estado administrativo, el catalogo de requisitos, el historial de revisiones y los resultados por requisito.
+El administrador puede consultar la informacion completa del negocio, evaluar ocho requisitos, escribir observaciones y decidir entre verificar, solicitar correcciones o rechazar. El backend exige autenticacion de administrador y no permite verificar si faltan evaluaciones o requisitos obligatorios cumplidos.
+Cada decision se guarda en el historial y genera una notificacion al propietario. Cuando se solicitan correcciones, el propietario puede actualizar su negocio y reenviarlo a revision. La ruta antigua PATCH /api/negocios/:id/verificar fue retirada y su comprobacion respondio HTTP 404.
+La compilacion final de Angular termino correctamente. El flujo visual completo de una revision con negocio pendiente no se pudo ejecutar porque la lista administrativa estaba vacia al momento de la prueba; no se crearon datos ficticios ni se modificaron datos para forzar el escenario.

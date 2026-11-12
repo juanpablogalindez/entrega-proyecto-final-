@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title">
+  <title id="title">Ilustración placeholder de crecimiento</title>
+  <circle cx="160" cy="124" r="88" fill="#fff" opacity=".96"/>
+  <path d="M96 178h128" stroke="#ffb489" stroke-linecap="round" stroke-width="12"/>
+  <path d="M112 166v-39h34v39m15 0V96h34v70m15 0V63h34v103" fill="#ffe0a6" stroke="#ff5500" stroke-linejoin="round" stroke-width="8"/>
+  <path d="M108 92l39-27 28 13 52-39" fill="none" stroke="#ff5500" stroke-linecap="round" stroke-linejoin="round" stroke-width="9"/>
+  <path d="M222 39h17v17" fill="none" stroke="#ff5500" stroke-linecap="round" stroke-linejoin="round" stroke-width="9"/>
+</svg>

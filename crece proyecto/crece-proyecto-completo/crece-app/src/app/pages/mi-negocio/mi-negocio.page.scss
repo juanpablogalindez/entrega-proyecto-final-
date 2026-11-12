@@ -1,0 +1,218 @@
+.crece-owner-header {
+  padding: calc(env(safe-area-inset-top, 0px) + 16px) 18px 18px;
+  color: #fff;
+  background: var(--crece-primary);
+
+  > span {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  h1 {
+    margin: 4px 0 2px;
+    font-size: 23px;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+}
+
+.crece-owner-content {
+  --padding-top: 14px;
+  --padding-bottom: 30px;
+}
+
+.business-profile-selector {
+  margin: 4px 0 14px;
+}
+
+.owner-hero {
+  border-radius: 18px;
+  background: linear-gradient(135deg, #8ed4bc, #0f6e56);
+  box-shadow: 0 7px 18px rgba(15, 110, 86, 0.16);
+}
+
+.owner-avatar {
+  color: var(--crece-primary);
+  background: #fff;
+}
+
+.owner-hero ion-badge {
+  --background: #fff;
+  --color: var(--crece-primary);
+}
+
+.owner-stats > div {
+  border-color: var(--crece-borde);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.owner-stats strong {
+  color: var(--crece-primary);
+}
+
+.owner-orders-card,
+.owner-reviews-card {
+  margin: 14px 0;
+  border-radius: 16px;
+}
+
+.owner-orders-card ion-segment {
+  margin: 0 0 12px;
+}
+
+.owner-order-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 6px 0;
+  }
+}
+
+.order-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.crece-owner-content form ion-list {
+  padding: 6px 0;
+  border-radius: 16px;
+}
+
+.owner-location-control {
+  margin: 12px 8px 18px;
+  padding: 14px;
+  border: 1px solid var(--crece-borde);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.owner-location-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  h2 {
+    margin: 0;
+    color: #19382e;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: var(--crece-gris-texto);
+    font-size: 0.68rem;
+    line-height: 1.4;
+  }
+}
+
+.owner-location-map {
+  z-index: 0;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  border: 1px solid #e3eae4;
+  border-radius: 13px;
+  background: #e8f0eb;
+}
+
+.owner-location-coordinates {
+  margin: 9px 2px 0;
+  color: #63736a;
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
+}
+
+.legal-documents {
+  margin: 12px 8px 18px;
+  padding: 14px;
+  border: 1px solid var(--crece-borde);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.legal-documents-heading {
+  margin-bottom: 12px;
+
+  h2 {
+    margin: 0;
+    color: #19382e;
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: var(--crece-gris-texto);
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+}
+
+.legal-documents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.legal-document-option {
+  min-width: 0;
+  text-align: center;
+
+  ion-button {
+    --border-radius: 12px;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    margin: 0;
+    min-height: 44px;
+    font-size: 0.68rem;
+    white-space: normal;
+  }
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--crece-primary);
+    font-size: 0.68rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+.crece-owner-content form > ion-button {
+  --border-radius: 999px;
+}
+
+@media (max-width: 360px) {
+  .legal-documents {
+    margin-inline: 2px;
+    padding: 10px;
+  }
+
+  .legal-documents-grid {
+    gap: 5px;
+  }
+
+  .legal-document-option ion-button {
+    font-size: 0.61rem;
+  }
+}

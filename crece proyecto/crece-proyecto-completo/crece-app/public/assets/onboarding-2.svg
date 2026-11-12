@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-labelledby="title">
+  <title id="title">Ilustración placeholder de negocio local</title>
+  <rect x="54" y="66" width="212" height="142" rx="18" fill="#fff" opacity=".96"/>
+  <path d="M75 72l18-42h134l18 42" fill="#ffe0a6" stroke="#fff" stroke-linejoin="round" stroke-width="8"/>
+  <path d="M75 72c0 14 20 20 31 7 11 13 31 7 31-7 0 14 20 20 31 7 11 13 31 7 31-7 0 14 20 20 31 7 8-10 2-21-5-34" fill="#ff5500"/>
+  <rect x="91" y="112" width="56" height="96" rx="8" fill="#fff0e8"/>
+  <rect x="166" y="119" width="72" height="49" rx="8" fill="#ffe0a6"/>
+  <path d="M171 187h62" stroke="#ffb489" stroke-linecap="round" stroke-width="9"/>
+</svg>

@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Servidor Crece+ frontend",
+			"type": "shell",
+			"command": "Set-Location 'C:\\Users\\pedroza\\OneDrive\\Desktop\\INGENIERIA\\crece proyecto\\crece-proyecto-completo\\crece-app'; npm start -- --host 0.0.0.0",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Crece+ Backend (visible)",
+			"type": "shell",
+			"command": "Set-Location 'C:\\Users\\pedroza\\OneDrive\\Desktop\\INGENIERIA\\crece proyecto\\crece-proyecto-completo\\backend'; npm run dev",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Crece+ Frontend (visible)",
+			"type": "shell",
+			"command": "Set-Location 'C:\\Users\\pedroza\\OneDrive\\Desktop\\INGENIERIA\\crece proyecto\\crece-proyecto-completo\\crece-app'; npm start -- --host 0.0.0.0",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

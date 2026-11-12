@@ -1,0 +1,59 @@
+:root {
+  --ion-font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+  --ion-background-color: #f5f7f2;
+  --ion-background-color-rgb: 245, 247, 242;
+
+  --ion-color-primary: #0f6e56;
+  --ion-color-primary-rgb: 15, 110, 86;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #0d604b;
+  --ion-color-primary-tint: #2d8770;
+
+  --ion-color-secondary: #d84315;
+  --ion-color-secondary-rgb: 216, 67, 21;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #bf3b12;
+  --ion-color-secondary-tint: #e45b32;
+
+  --ion-color-success: #1e9e57;
+  --ion-color-success-rgb: 30, 158, 87;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #1a8b4d;
+  --ion-color-success-tint: #35a868;
+
+  --ion-color-danger: #e53935;
+  --ion-color-danger-rgb: 229, 57, 53;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #ca3230;
+  --ion-color-danger-tint: #e84d49;
+
+  --ion-color-warning: #ffc107;
+  --ion-color-warning-rgb: 255, 193, 7;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0aa06;
+  --ion-color-warning-tint: #ffc720;
+
+  --ion-color-light: #f1f4f3;
+  --ion-toolbar-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-card-background: #ffffff;
+  --ion-text-color: #1e2d1b;
+  --ion-color-medium: #737d7a;
+  --crece-gradient: linear-gradient(135deg, #0f6e56 0%, #d84315 100%);
+  --crece-soft: #e1f5ee;
+  --crece-shadow: 0 8px 22px rgba(15, 110, 86, 0.09);
+
+  --crece-primary: #0f6e56;
+  --crece-orange: #d84315;
+  --crece-orange-soft: #fff0e7;
+  --crece-degradado: linear-gradient(135deg, #0f6e56 0%, #d84315 100%);
+  --crece-gris-texto: #697873;
+  --crece-borde: #e3eae4;
+  --crece-sombra: 0 6px 18px rgba(19, 58, 45, 0.08);
+  --crece-radio: 16px;
+}

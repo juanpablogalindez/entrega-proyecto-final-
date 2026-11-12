@@ -1,0 +1,371 @@
+/* ============================================================
+   Crece+ · estilos extra (filtros, mapa, categorías, reseñas)
+   Pega este archivo al final de src/global.scss, después de global-doh.scss
+   ============================================================ */
+
+/* ---------- Categorías: fila de círculos con scroll horizontal ---------- */
+.crece-categorias {
+  display: flex;
+  gap: 12px;
+  padding: 14px 12px 10px;
+  overflow-x: auto;
+  background: #fff;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+.crece-categoria {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 76px;
+  border: 0;
+  background: none;
+  font: 600 12px var(--ion-font-family);
+  color: #333;
+
+  .circulo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    ion-icon { font-size: 28px; color: var(--crece-primary); }
+  }
+  &.activa .circulo { background: var(--crece-primary); ion-icon { color: #fff; } }
+}
+
+/* ---------- Chips seleccionables (categorías en filtros) ---------- */
+button.crece-chip {
+  border: 0;
+  font-family: var(--ion-font-family);
+  &.activo { background: var(--crece-primary); color: #fff; }
+}
+
+/* ---------- Hoja de filtros (modal inferior) ---------- */
+ion-modal.crece-sheet {
+  --border-radius: 24px 24px 0 0;
+  --background: #f2f2f2;
+}
+.crece-filtros {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f2f2f2;
+}
+.crece-filtros__cuerpo { flex: 1; overflow-y: auto; padding: 8px 16px 16px; }
+.crece-filtros h3 { margin: 22px 0 10px; font-size: 20px; font-weight: 700; }
+.crece-filtros h3:first-child { margin-top: 8px; }
+.crece-filtros label { display: block; margin: 12px 12px 6px; font-size: 17px; font-weight: 600; }
+.crece-select-wrap {
+  position: relative;
+  select {
+    width: 100%;
+    height: 56px;
+    padding: 0 48px 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    font: 700 17px var(--ion-font-family);
+    color: #1c1c1c;
+  }
+  ion-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--crece-primary);
+    pointer-events: none;
+  }
+}
+.crece-rango {
+  ion-range {
+    --bar-background: #dcdcdc;
+    --bar-background-active: var(--crece-primary);
+    --bar-height: 4px;
+    --knob-background: var(--crece-primary);
+    --knob-size: 24px;
+    padding: 8px 14px;
+  }
+}
+.crece-rango__valor { margin: 0; text-align: center; font-size: 15px; font-weight: 700; }
+.crece-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  text-align: center;
+  font-weight: 600;
+  color: #555;
+  ion-icon { font-size: 34px; color: #9a9a9a; }
+}
+.crece-filtros__pie {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px calc(env(safe-area-inset-bottom, 0px) + 12px);
+  background: #f2f2f2;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+}
+.crece-btn {
+  flex: 1;
+  height: 50px;
+  border: 0;
+  border-radius: 999px;
+  font: 800 17px var(--ion-font-family);
+}
+.crece-btn--suave { background: #e6e6e6; color: #8d8d8d; }
+.crece-btn--primario { background: var(--crece-primary); color: #fff; }
+
+/* ---------- Mapa ---------- */
+.crece-mapa {
+  position: relative;
+  height: 100%;
+  #mapa { position: absolute; inset: 0; }
+}
+.crece-pin svg { filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3)); }
+.crece-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #ff7a1a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+}
+.crece-yo {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #1e88ff;
+  box-shadow: 0 0 0 8px rgba(30, 136, 255, 0.25);
+}
+.crece-mapa-card {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 84px;
+  z-index: 1000;
+  display: flex;
+  min-height: 130px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  color: inherit;
+  text-decoration: none;
+
+  img { width: 36%; object-fit: cover; }
+  .crece-estado { margin-left: 0; }
+}
+.crece-mapa-card__texto { flex: 1; padding: 12px 14px; min-width: 0; }
+.crece-mapa-card__cab { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.crece-mapa-card__titulo { margin: 0; font-size: 17px; font-weight: 800; }
+.crece-mapa-card__nota { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; ion-icon { color: var(--ion-color-warning); font-size: 20px; } }
+.crece-mapa-card__desc {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--crece-gris-texto);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.crece-mapa-pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 12px calc(env(safe-area-inset-bottom, 0px) + 10px);
+  border-radius: 20px 20px 0 0;
+  background: #f2f2f2;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.12);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    border-radius: 4px;
+    background: #cfcfcf;
+    transform: translateX(-50%);
+  }
+}
+.crece-btn-cargar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: var(--crece-sombra);
+  font: 800 16px var(--ion-font-family);
+  color: #1c1c1c;
+  ion-icon { font-size: 20px; color: var(--crece-primary); }
+}
+
+/* ---------- Detalle (variante con caja durazno) ---------- */
+.crece-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 12px;
+  background: var(--crece-primary);
+  color: #fff;
+  button { border: 0; background: none; color: #fff; ion-icon { font-size: 28px; } }
+  img { height: 22px; }
+}
+.crece-detalle-foto {
+  background: #ebebeb;
+  text-align: center;
+  img { display: block; max-width: 100%; max-height: 280px; margin: 0 auto; object-fit: contain; }
+}
+.crece-info {
+  padding: 14px 16px 22px;
+  background: #ffe5d9;
+  text-align: center;
+  h1 { margin: 6px 0; font-size: 19px; font-weight: 700; }
+  p { margin: 8px 0; font-weight: 500; line-height: 1.45; }
+  p strong { font-weight: 700; }
+}
+.crece-compartir {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font: 600 13px var(--ion-font-family);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--crece-primary);
+  ion-icon { font-size: 20px; }
+}
+.crece-info__nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 700;
+  ion-icon { font-size: 24px; color: var(--ion-color-warning); }
+}
+.crece-acciones-pill { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+.crece-accion-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 68px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--crece-primary);
+  color: #fff;
+  font: 700 12px var(--ion-font-family);
+  ion-icon { font-size: 22px; }
+}
+
+/* ---------- Catálogo / galería de productos ---------- */
+.crece-galeria {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 16px;
+  background: #fff;
+}
+.crece-galeria__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #e9e9e9;
+  img { max-width: 100%; max-height: 100%; object-fit: contain; }
+}
+.crece-productos-titulo {
+  margin: 28px 0 12px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--crece-primary);
+}
+.crece-productos-texto {
+  margin: 0;
+  padding: 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #777;
+}
+
+/* ---------- Reseñas ---------- */
+.crece-opinion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 28px 0 16px;
+  border: 0;
+  background: none;
+  width: 100%;
+  font: 700 16px var(--ion-font-family);
+  color: #1c1c1c;
+  .burbuja {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--crece-primary);
+    color: #fff;
+    ion-icon { font-size: 20px; }
+  }
+}
+.crece-resenas { display: flex; flex-direction: column; gap: 12px; padding: 0 14px 28px; background: #fff; }
+.crece-resena {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.crece-resena__cab { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #444; }
+.crece-resena__texto { margin: 8px 0 0; font-size: 15px; }
+.crece-estrellas--resena ion-icon[name$='-outline'] { color: #c9c9c9; }
+
+/* ---------- Pie naranja con redes ---------- */
+.crece-pie-social {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding: 22px 0;
+  background: var(--crece-primary);
+  color: #fff;
+  ion-icon { font-size: 24px; }
+}
